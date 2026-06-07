@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter for You</title>
+
+  <!-- =============================================
+       FONTS — Cormorant Garamond for elegant display,
+       Lora for body text — both sourced from Google Fonts
+       ============================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       CANVAS — Three.js-free star field drawn here
+       ============================================= -->
+  <canvas id="starCanvas"></canvas>
+
+  <!-- =============================================
+       PARTICLES — Soft floating glow particles
+       ============================================= -->
+  <div id="particles" aria-hidden="true"></div>
+
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║           SECTION 1 — INTRO              ║
+       ╚══════════════════════════════════════════╝ -->
+  <section id="intro" class="screen-center" aria-label="Intro screen">
+    <div class="intro-inner">
+
+      <!-- Name greeting — change "Nicolai" to the recipient's name -->
+      <h1 class="intro-name" id="introName">To you, Nicolai.</h1>
+
+      <!-- The main CTA button -->
+      <button class="open-btn" id="openBtn" aria-label="Open the letter">
+        <span class="btn-glow"></span>
+        <span class="btn-text">Open My Letter</span>
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║      MAIN CONTENT (hidden until open)    ║
+       ╚══════════════════════════════════════════╝ -->
+  <!-- ─────────────────────────────────────────
+       MUSIC PLAYER — outside mainContent so it
+       stays visible regardless of scroll position
+       ──────────────────────────────────────── -->
+  <div id="musicPlayer" class="music-player" role="region" aria-label="Music player">
+    <button id="musicBtn" class="music-btn" aria-label="Play music">
+      <svg id="playIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg id="pauseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+    <span class="music-label">Our Song</span>
+
+    <!-- =============================================
+         MUSIC FILE — Replace the src below with your
+         own MP3 file path, e.g. "music/your-song.mp3"
+         or a URL. The audio does NOT autoplay.
+         ============================================= -->
+    <audio id="bgMusic" loop>
+      <source src="music/music.mp3" type="audio/mpeg" />
+      Your browser does not support audio.
+    </audio>
+  </div>
+
+  <main id="mainContent" aria-label="Letter content" hidden>
+
+    <!-- ─────────────────────────────────────────
+         SECTION 2 — TYPEWRITER
+         ──────────────────────────────────────── -->
+    <section class="section typewriter-section" aria-label="Opening message">
+      <div class="container">
+        <p class="typewriter-text" id="typewriterText" aria-live="polite"></p>
+        <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+          <span>scroll</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="20" height="20"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         SECTION 4 — PHOTO GALLERY
+         ──────────────────────────────────────── -->
+    <section class="section gallery-section" aria-label="Photo memories">
+      <div class="container">
+        <h2 class="section-title reveal-up">A Gallery of Us</h2>
+        <p class="section-subtitle reveal-up">Moments I carry with me forever</p>
+
+        <!--
+        =============================================
+        PHOTOS — Replace each src="" below with your
+        own image paths, e.g. "photos/photo1.jpg"
+        The alt="" text describes the photo for
+        screen readers — please fill those in too.
+        =============================================
+        -->
+        <div class="gallery-grid">
+          <div class="gallery-item reveal-photo" style="--photo-delay:0s">
+            <img src="pictures/pic1.jpg" alt="2-20-26" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">2-20-26</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.08s">
+            <img src="pictures/pic2.jpg" alt="1-16-26" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">1-16-26</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.16s">
+            <img src="pictures/pic3.jpg" alt="12-15-25" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">12-15-25</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.24s">
+            <img src="pictures/pic4.jpg" alt="12-22-25" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">12-22-25</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.32s">
+            <img src="pictures/pic5.jpg" alt="Our first hangout" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">11-22-25 | Our first hangout</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.40s">
+            <img src="pictures/pic6.jpg" alt="1-16-26" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">1-16-26</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.48s">
+            <img src="pictures/pic7.jpg" alt="My favorite photo of yours" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">2-14-26 | My favorite photo of yours</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.56s">
+            <img src="pictures/pic8.jpg" alt="2-20-26" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">2-20-26</span>
+            </div>
+          </div>
+
+          <div class="gallery-item reveal-photo" style="--photo-delay:0.64s">
+            <img src="pictures/pic9.jpg" alt="2-20-26" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-caption">2-20-26</span>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         SECTION 4b — VIDEO MEMORIES
+         Videos display at their true size.
+         Tap/click the video to play — no autoplay.
+         ──────────────────────────────────────── -->
+    <section class="section video-section" aria-label="Video memories">
+      <div class="container">
+        <h2 class="section-title reveal-up">Moving Memories</h2>
+        <p class="section-subtitle reveal-up">Tap to play</p>
+
+        <div class="video-list">
+
+          <!--
+          =============================================
+          VIDEO 1 — Replace src with your video file.
+          Put your videos inside a "videos/" folder
+          next to index.html on GitHub.
+          Example: src="videos/video1.mp4"
+          =============================================
+          -->
+          <div class="video-item reveal-video" style="--vid-delay: 0s">
+            <video
+              src="videos/vid1.mp4"
+              playsinline
+              preload="metadata"
+              controls
+            ></video>
+            <!-- Optional caption below the video — edit or delete -->
+            <p class="video-caption">Home</p>
+          </div>
+
+          <!-- VIDEO 2 — Replace src="videos/video2.mp4" -->
+          <div class="video-item reveal-video" style="--vid-delay: 0.1s">
+            <video
+              src="videos/vid2.mp4"
+              playsinline
+              preload="metadata"
+              controls
+            ></video>
+            <p class="video-caption">You made me the Happiest</p>
+          </div>
+
+          <!-- VIDEO 3 — Replace src="videos/video3.mp4"
+               Delete this entire block if you only have 2 videos -->
+          <div class="video-item reveal-video" style="--vid-delay: 0.2s">
+            <video
+              src="videos/vid3.mp4"
+              playsinline
+              preload="metadata"
+              controls
+            ></video>
+            <p class="video-caption">Where it all began</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         SECTION 5 — THE MAIN LETTER
+         ──────────────────────────────────────── -->
+    <section class="section letter-section" aria-label="The main letter">
+      <div class="container container--narrow">
+
+        <div class="letter-header reveal-up">
+          <span class="letter-label">A letter</span>
+          <h2 class="letter-title">For you.</h2>
+        </div>
+
+        <!--
+        =============================================
+        YOUR LETTER — Replace everything inside the
+        <div class="letter-body"> with your own words.
+        Use <p> tags for paragraphs.
+        You can add as many paragraphs as you need.
+        =============================================
+        -->
+        <div class="letter-body">
+
+          <p class="reveal-letter">Before I start, i just want to say sorry for bothering you again. I guess I've reached the point where I can no longer keep all of these thoughts to myself. I just couldn't bear to let everything end without saying the words I never got the chance to tell you, with all honesty this time. I'm not expecting a reply or anything from you.</p>
+
+          <p class="reveal-letter">It's been a week since you decided to end things between us, and honestly, it has become one of the darkest moments of my life. Not only because I lost someone who meant so much to me, but because it felt like a part of me died that day. I saw a future with you, Nicolai. I truly did. Maybe that's why this hurts so much. In a way, this pain feels even heavier than the day I found out I was colorblind and realized I could never pursue my dream of becoming a pilot.</p>
+
+          <p class="reveal-letter">Since the day you left, I've been struggling every single day. I've neglected myself, doing harmful things to at least numb the pain in my heart but none of it works. It feels like I've lost my dreams in this lifetime, twice.</p>
+
+          <p class="reveal-letter">I'm sorry, Nicolai. Even now, I still find myself blaming only myself for losing you. Sometimes I wonder if things would have been different if I hadn't been so slow. Maybe if I had handled everything differently, you wouldn't have left. I'm sorry for my actions and for the mistakes I made along the way. Yes, Nicolai, hindi naging tayo and that was the biggest regrets I've ever had in my life - Na sakin na pinakawalan ko pa, na sana nagmadali agad ako. That's why valid lahat ng nararamdaman mo and also yung mga naging actions mo. Kaya kahit pa anong effort yung gawin ko, Kahit masaktan pa tayo both, it will not change the fact that still wala tayong karapatan sa isa't isa.</p>
+
+          <p class="reveal-letter">But I also want you to know this – I loved you unconditionally. Maybe not always in the right way. Maybe not in the way you wanted or needed. But I loved you sincerely. I gave everything I had because I believed in us. I know may naging pagkukulang ako, and I know I wasn't perfect, but I truly made my best to make you stay. to become better for the sake of what we had. All I ever wanted was for us to grow together and reach the next chapter of our lives with you by my side. All I ever wanted was to finish this college with you by my side. Build a future with you by my side. All I ever wanted was to be with you. </p>
+
+          <p class="reveal-letter">I'm sorry if sobrang kulit ko when it comes to you. I'm sorry if I seemed selfish at times. The truth is, I was just afraid of losing you, but now, I lost you. And it hurts like hell. I know I'm no longer in a position to say these things, but for one last time, I want you to know this: Mahal na mahal kita, Nicolai. Totoong minahal kita, sobra at buong buo.</p>
+
+          <p class="reveal-letter">And for what it's worth, I'm not mad at you. I'm not mad about your decisions or the choices you've made. Despite everything, I still can't bring myself to hate you. We all have our reasons, and I choose to respect yours.</p>
+
+          <p class="reveal-letter">I still hope that someday we'll have the chance to talk in person finally have the conversation we never got to have. </p>
+
+          <p class="reveal-letter">I will forever care about you. Please be the happiest person you can be.</p>
+
+
+          <p class="reveal-letter letter-closing">With all my heart and Sincerity,<br /><em>Ben/Jb</em></p>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         SECTION 6 — FINAL / CLOSING
+         ──────────────────────────────────────── -->
+    <section class="section final-section" id="finalSection" aria-label="Closing message">
+      <div class="container container--narrow final-inner">
+
+        <div class="final-quote reveal-final">
+          <p>No matter where life takes us, a part of me will always believe that somehow, someday, we'll find our way back to each other.</p>
+        </div>
+
+        <div class="final-farewell reveal-final-slow">
+          Take care, always.
+        </div>
+
+        <!-- Decorative glow orb -->
+        <div class="final-orb" aria-hidden="true"></div>
+
+      </div>
+    </section>
+
+  </main><!-- /mainContent -->
+
+
+  <script src="script.js"></script>
+</body>
+</html>

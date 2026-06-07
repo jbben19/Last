@@ -1,0 +1,878 @@
+/* ================================================
+   LOVE LETTER WEBSITE — style.css
+   Dark cinematic aesthetic with elegant typography
+   ================================================ */
+
+/* ── 1. CSS CUSTOM PROPERTIES (Design Tokens) ─── */
+:root {
+  /* Color palette */
+  --clr-bg:         #06060f;   /* Deep night sky */
+  --clr-bg-mid:     #0a0a18;
+  --clr-bg-light:   #0f0f24;
+  --clr-gold:       #c9b99a;   /* Warm antique gold */
+  --clr-gold-dim:   #8a7a64;
+  --clr-gold-glow:  rgba(201, 185, 154, 0.15);
+  --clr-white:      #f0ede8;
+  --clr-text:       #b8b0a4;
+  --clr-text-dim:   #6e6860;
+  --clr-star:       #e8e0d0;
+  --clr-accent:     rgba(201, 185, 154, 0.08);
+
+  /* Typography */
+  --font-display:   'Cormorant Garamond', Georgia, serif;
+  --font-body:      'Lora', Georgia, serif;
+
+  /* Spacing */
+  --section-pad:    clamp(5rem, 12vw, 10rem);
+  --container:      900px;
+  --container-sm:   680px;
+
+  /* Transitions */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 2. RESET & BASE ───────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  overflow-x: hidden;
+  /* Prevent flash of white on mobile */
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── 3. STAR CANVAS (background layer) ─────────── */
+#starCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Canvas fills the full viewport */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ── 4. FLOATING PARTICLES ─────────────────────── */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Each particle is created dynamically by JS */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,185,154,0.6) 0%, transparent 70%);
+  animation: floatParticle linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatParticle {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+}
+
+/* ── 5. LAYOUT HELPERS ─────────────────────────── */
+
+/* Positions children in the center of the viewport */
+.screen-center {
+  position: relative;
+  z-index: 10;
+  min-height: 100dvh;       /* dynamic viewport height — works on mobile */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Generic section block */
+.section {
+  position: relative;
+  z-index: 10;
+  padding: var(--section-pad) 1.5rem;
+}
+
+/* Max-width content wrappers */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.container--narrow {
+  max-width: var(--container-sm);
+}
+
+/* ── 6. INTRO SCREEN ───────────────────────────── */
+#intro {
+  /* Subtle radial glow behind the intro text */
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,185,154,0.04) 0%, transparent 70%);
+  transition: opacity 0.9s var(--ease-smooth), visibility 0.9s;
+}
+
+#intro.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* The name displayed at the top — change "Nicolai" in HTML */
+.intro-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--clr-white);
+  letter-spacing: 0.02em;
+  animation: fadeSlideUp 1.2s var(--ease-out-expo) both;
+  /* Subtle text glow */
+  text-shadow: 0 0 60px rgba(201,185,154,0.3);
+}
+
+.intro-subtitle {
+  font-size: clamp(0.875rem, 2.5vw, 1.0625rem);
+  color: var(--clr-text-dim);
+  line-height: 2;
+  letter-spacing: 0.03em;
+  animation: fadeSlideUp 1.2s 0.3s var(--ease-out-expo) both;
+  max-width: 36ch;
+}
+
+/* ── 7. OPEN BUTTON ────────────────────────────── */
+.open-btn {
+  position: relative;
+  margin-top: 1rem;
+  padding: 1rem 2.8rem;
+  background: transparent;
+  border: 1px solid rgba(201,185,154,0.35);
+  color: var(--clr-gold);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.4s, color 0.4s, box-shadow 0.4s, background 0.4s;
+  animation: fadeSlideUp 1.2s 0.65s var(--ease-out-expo) both;
+}
+
+/* Stable glow — no rotation, no flicker */
+.open-btn:hover,
+.open-btn:focus-visible {
+  border-color: rgba(201,185,154,0.7);
+  color: var(--clr-white);
+  background: rgba(201,185,154,0.04);
+  box-shadow:
+    0 0 25px rgba(201,185,154,0.18),
+    0 0 60px rgba(201,185,154,0.07),
+    inset 0 0 20px rgba(201,185,154,0.04);
+  outline: none;
+}
+
+.btn-glow {
+  display: none; /* Removed — was causing the glitch */
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 8. MAIN CONTENT TRANSITION ─────────────────── */
+#mainContent {
+  position: relative;
+  z-index: 10;
+}
+
+#mainContent.visible {
+  display: block;
+  animation: mainReveal 1.4s var(--ease-out-expo) both;
+}
+
+@keyframes mainReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── 9. MUSIC PLAYER ───────────────────────────── */
+.music-player {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  /* Start invisible — only opacity transitions in, NOT transform
+     so the bounce animation can control transform freely */
+  opacity: 0;
+  transition: opacity 0.8s 1.2s var(--ease-out-expo);
+}
+
+.music-player.visible {
+  opacity: 1;
+}
+
+/* Bounce attention animation — runs 2× after fading in completes (1.2s transition + 0.8s buffer) */
+.music-player.attention {
+  animation: mpAttention 0.9s var(--ease-out-expo) 2.2s 2;
+}
+
+@keyframes mpAttention {
+  0%   { transform: translateY(0);    }
+  35%  { transform: translateY(-12px); }
+  65%  { transform: translateY(-5px);  }
+  100% { transform: translateY(0);    }
+}
+
+.music-btn {
+  position: relative; /* needed for ::after ring to position correctly */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,185,154,0.3);
+  background: rgba(6,6,15,0.8);
+  color: var(--clr-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* No float animation here — avoids conflict with parent .music-player animations */
+}
+
+/* Expanding ring pulse — fires 4× to invite a click */
+.music-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(201,185,154,0.5);
+  opacity: 0;
+  animation: mpRingPulse 1.8s ease-out 2.2s 4;
+  pointer-events: none;
+}
+
+@keyframes mpRingPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.7); opacity: 0;   }
+}
+
+@keyframes floatMusic {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-5px); }
+}
+
+.music-btn:hover {
+  border-color: rgba(201,185,154,0.6);
+  box-shadow: 0 0 20px rgba(201,185,154,0.15);
+}
+
+/* Pulsing ring when playing */
+.music-btn.playing {
+  animation: musicPulse 2s ease-in-out infinite;
+}
+
+/* Hide the invite ring once playing */
+.music-btn.playing::after {
+  display: none;
+}
+
+/* Stop the ::after ring when already playing */
+.music-btn.playing::after {
+  display: none;
+}
+
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(201,185,154,0.35); }
+  50%       { box-shadow: 0 0 0 10px rgba(201,185,154,0); }
+}
+
+.music-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--clr-text-dim);
+  white-space: nowrap;
+}
+
+/* ── 10. TYPEWRITER SECTION ─────────────────────── */
+.typewriter-section {
+  height: 100dvh;          /* Exactly one viewport — no overflow */
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* True center — text appears right away */
+  padding: 2rem 1.5rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(6,6,15,0.6) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(6,6,15,0.6) 100%
+  );
+  /* Prevent any internal scroll */
+  overflow: hidden;
+}
+
+.typewriter-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--clr-white);
+  line-height: 1.6;
+  text-align: center;
+  letter-spacing: 0.015em;
+  text-shadow: 0 0 40px rgba(201,185,154,0.2);
+  max-width: 26ch;
+  margin-inline: auto;
+}
+
+/* The blinking cursor after typewriter text */
+.typewriter-text::after {
+  content: '|';
+  color: var(--clr-gold);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+.typewriter-text.done::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Animated scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--clr-text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: scrollHintAppear 1s 4.5s var(--ease-out-expo) forwards;
+}
+
+@keyframes scrollHintAppear {
+  to { opacity: 0.5; }
+}
+
+.scroll-hint svg {
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+
+/* ── 11. SECTION TITLES ─────────────────────────── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 300;
+  color: var(--clr-white);
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 50px rgba(201,185,154,0.15);
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--clr-text-dim);
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 4rem;
+}
+
+/* ── 12. MEMORY CARDS ───────────────────────────── */
+.memories-section {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(201,185,154,0.02) 50%,
+    transparent
+  );
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+.memory-card {
+  background: rgba(201,185,154,0.03);
+  border: 1px solid rgba(201,185,154,0.1);
+  border-radius: 4px;
+  padding: 2.2rem 1.8rem;
+  transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+  cursor: default;
+  /* Animation vars set inline in HTML */
+}
+
+.memory-card:hover {
+  border-color: rgba(201,185,154,0.25);
+  box-shadow: 0 8px 40px rgba(201,185,154,0.06);
+  transform: translateY(-4px);
+}
+
+.card-icon {
+  font-size: 1.1rem;
+  color: var(--clr-gold);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.memory-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--clr-white);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.memory-card p {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--clr-text);
+}
+
+/* ── 13. PHOTO GALLERY ──────────────────────────── */
+.gallery-section {
+  padding-bottom: calc(var(--section-pad) * 1.2);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 3rem;
+}
+
+/* Every item is a simple equal square — 9 photos fills 3x3 perfectly */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  aspect-ratio: 1;
+  background: var(--clr-bg-light);
+  min-height: 0;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6,6,15,0.75) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem 1rem;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--clr-gold);
+  letter-spacing: 0.04em;
+}
+
+/* Responsive: 2-column on tablet, 1-column on mobile */
+@media (max-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 13b. VIDEO SECTION ─────────────────────────── */
+.video-section {
+  padding-top: 0; /* Sits right below gallery, no extra gap */
+}
+
+/* Stacked list — each video on its own row, true size */
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  margin-top: 3rem;
+  align-items: center; /* Center narrower videos */
+}
+
+.video-item {
+  width: 100%;
+  max-width: 720px; /* Cap width so portrait videos don't stretch huge on desktop */
+}
+
+/* The video element itself — true aspect ratio, no cropping */
+.video-item video {
+  width: 100%;
+  height: auto;        /* Key: respects original width/height ratio */
+  display: block;
+  border-radius: 4px;
+  border: 1px solid rgba(201,185,154,0.12);
+  background: var(--clr-bg-light);
+  /* Style the native controls bar to feel dark */
+  color-scheme: dark;
+}
+
+/* Subtle glow on hover/focus */
+.video-item video:hover,
+.video-item video:focus-within {
+  border-color: rgba(201,185,154,0.28);
+  box-shadow: 0 8px 40px rgba(201,185,154,0.07);
+}
+
+/* Caption under the video */
+.video-caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--clr-text-dim);
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* Scroll reveal for video items */
+.reveal-video {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+  transition-delay: var(--vid-delay, 0s);
+}
+
+/* ── 14. MAIN LETTER ────────────────────────────── */
+.letter-section {
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,185,154,0.03) 0%, transparent 70%);
+}
+
+.letter-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.letter-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--clr-gold-dim);
+  margin-bottom: 0.75rem;
+}
+
+.letter-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--clr-white);
+  text-shadow: 0 0 60px rgba(201,185,154,0.2);
+}
+
+.letter-body {
+  /* Subtle decorative left line */
+  border-left: 1px solid rgba(201,185,154,0.12);
+  padding-left: clamp(1.5rem, 4vw, 3rem);
+}
+
+.letter-body p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  line-height: 2;
+  color: var(--clr-text);
+  margin-bottom: 1.75rem;
+}
+
+.letter-body p:last-child {
+  margin-bottom: 0;
+}
+
+.letter-closing {
+  color: var(--clr-gold-dim) !important;
+  font-style: italic;
+  margin-top: 2.5rem;
+}
+
+/* ── 15. FINAL SECTION ──────────────────────────── */
+.final-section {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(201,185,154,0.05) 0%, transparent 70%);
+}
+
+.final-inner {
+  position: relative;
+  padding: 4rem 1rem;
+}
+
+.final-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--clr-white);
+  line-height: 2;
+  margin-bottom: 3.5rem;
+  text-shadow: 0 0 40px rgba(201,185,154,0.15);
+}
+
+.final-quote p {
+  margin-bottom: 0.5rem;
+}
+
+.final-farewell {
+  font-family: var(--font-display);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--clr-gold-dim);
+}
+
+/* Large glowing orb behind the final text */
+.final-orb {
+  position: absolute;
+  width: clamp(300px, 60vw, 600px);
+  height: clamp(300px, 60vw, 600px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,185,154,0.06) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: orbPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+  50%       { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+/* ── 16. SCROLL-REVEAL ANIMATION CLASSES ────────── */
+
+/* Base invisible state — JS adds .in-view to trigger animation */
+.reveal-up,
+.reveal-card,
+.reveal-photo,
+.reveal-video,
+.reveal-letter,
+.reveal-final,
+.reveal-final-slow {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+}
+
+/* Card has staggered delay set by CSS var */
+.reveal-card {
+  transition-delay: var(--card-delay, 0s);
+}
+
+/* Photo has staggered delay */
+.reveal-photo {
+  transition-delay: var(--photo-delay, 0s);
+  transform: translateY(20px) scale(0.97);
+}
+
+.reveal-final {
+  transition-duration: 1.4s;
+  transition-delay: 0.2s;
+}
+
+.reveal-final-slow {
+  transition-duration: 2s;
+  transition-delay: 0.7s;
+  letter-spacing: 0.25em;
+}
+
+/* When in view — JS adds this class */
+.in-view {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* ── 17. GENERAL ANIMATIONS ─────────────────────── */
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 18. PARALLAX CONTAINER ─────────────────────── */
+/* Stars are drawn on canvas; this handles the subtle
+   CSS parallax tilt on deeper sections */
+.section {
+  will-change: transform;
+}
+
+/* ── 19. SCROLLBAR STYLING ──────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--clr-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(201,185,154,0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201,185,154,0.35);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,185,154,0.2) var(--clr-bg);
+}
+
+/* ── 20. SELECTION STYLING ──────────────────────── */
+::selection {
+  background: rgba(201,185,154,0.2);
+  color: var(--clr-white);
+}
+
+/* ── 21. FOCUS ACCESSIBILITY ────────────────────── */
+:focus-visible {
+  outline: 1px solid rgba(201,185,154,0.5);
+  outline-offset: 3px;
+}
+
+/* ── 22. RESPONSIVE OVERRIDES ───────────────────── */
+@media (max-width: 768px) {
+  .letter-body {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(201,185,154,0.1);
+    padding-top: 2rem;
+  }
+
+  .music-player {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .music-label {
+    display: none; /* Save space on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 23. REDUCED MOTION ─────────────────────────── */
+/* Respect OS-level preference to reduce animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.3s !important;
+  }
+  .reveal-up,
+  .reveal-card,
+  .reveal-photo,
+  .reveal-video,
+  .reveal-letter,
+  .reveal-final,
+  .reveal-final-slow {
+    opacity: 1;
+    transform: none;
+  }
+}
